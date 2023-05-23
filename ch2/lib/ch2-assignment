@@ -1,0 +1,320 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+	
+	String _title = "Kumoh42 Flutter App";	
+	MaterialColor _backgroundColor = Colors.red;
+
+  Widget build(BuildContext context){
+    return MaterialApp(
+      title: _title,
+      theme: ThemeData(
+        primarySwatch: _backgroundColor,
+      ),
+      home: MaterialFlutterApp(),
+    );
+  }
+}
+
+class MaterialFlutterApp extends StatefulWidget{
+  State<StatefulWidget> createState(){
+    return _MaterialFlutterApp();
+  }
+}
+
+class _MaterialFlutterApp extends State<MaterialFlutterApp> {
+    String operator = "";
+  String number = "0";
+  String value = "0.0";
+
+  Widget build(BuildContext context){ 
+var _width = MediaQuery.of(context).size.width;
+var _height = MediaQuery.of(context).size.height;
+
+  double _buttonWidth = _width/5;
+  double _buttonHeight = _height/9;
+ 
+
+    return Scaffold(
+      appBar: AppBar(title: Text("Cacluator"),),
+      body: Container(
+        child:Center(
+        child:Column(
+          children:<Widget>[
+            Padding(
+                padding: EdgeInsets.all(_buttonHeight/4),
+              child: Text(
+          '결과 : '+value,
+          style: TextStyle(fontSize: 30),
+        ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(_buttonHeight/4),
+                child: Text(number, style: TextStyle(fontSize: 30)),
+              ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children:<Widget>[
+                    
+                    OutlinedButton( 
+              	onPressed: () { // Respond to button press 
+                 setState((){
+                  value="0.0";
+                });
+                
+              	}, 
+              	style: OutlinedButton.styleFrom(
+              		//backgroundColor: Colors.blue
+                  fixedSize: Size(3*_buttonWidth, _buttonHeight),
+                ), 
+              	child: Text("AC"), 
+              ),
+                OutlinedButton( 
+              	onPressed: () { // Respond to button press 
+                  setState((){
+                    operator="/";
+                    if(number=="0") value="0";
+                    else value=(double.parse(value)/double.parse(number)).toString();
+                  number="0";
+                });
+              	}, 
+              	style: OutlinedButton.styleFrom(
+              		backgroundColor: Colors.yellow,
+                  fixedSize: Size(_buttonWidth, _buttonHeight),
+                ), 
+              	child: Text("/"), 
+              ),
+                ]
+              ),
+
+                Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children:<Widget>[
+                    
+                    OutlinedButton( 
+              	onPressed: () { // Respond to button press 
+                  setState((){
+                    if(number=="0") number = "7";
+                    else number+="7";
+                });
+              	}, 
+              	style: OutlinedButton.styleFrom(
+                  fixedSize: Size(_buttonWidth, _buttonHeight),
+                ), 
+              	child: Text("7"), 
+              ),
+                OutlinedButton( 
+              	onPressed: () { // Respond to button press 
+                  setState((){
+                      if(number=="0") number = "8";
+                    else number+="8";
+                });
+              	}, 
+              	style: OutlinedButton.styleFrom(
+              
+                  fixedSize: Size(_buttonWidth, _buttonHeight),
+                ), 
+              	child: Text("8"), 
+              ),
+              OutlinedButton( 
+              	onPressed: () { // Respond to button press 
+                  setState((){
+                     if(number=="0") number = "9";
+                    else number+="9";
+                });
+              	}, 
+              	style: OutlinedButton.styleFrom(
+              	
+                  fixedSize: Size(_buttonWidth, _buttonHeight),
+                ), 
+              	child: Text("9"), 
+              ),
+              OutlinedButton( 
+              	onPressed: () { // Respond to button press 
+                 setState((){
+                    operator="x";
+                  value=(double.parse(value)*double.parse(number)).toString();
+                  number="0";
+                });
+              	}, 
+              	style: OutlinedButton.styleFrom(
+              			backgroundColor: Colors.yellow,
+                  fixedSize: Size(_buttonWidth, _buttonHeight),
+                ), 
+              	child: Text("x"), 
+              ),
+                ]
+              ),
+
+               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children:<Widget>[
+                    
+                    OutlinedButton( 
+              	onPressed: () { // Respond to button press 
+                  setState((){
+                      if(number=="0") number = "4";
+                    else number+="4";
+                });
+              	}, 
+              	style: OutlinedButton.styleFrom(
+                  fixedSize: Size(_buttonWidth, _buttonHeight),
+                ), 
+              	child: Text("4"), 
+              ),
+                OutlinedButton( 
+              	onPressed: () { // Respond to button press 
+                  setState((){
+                     if(number=="0") number = "5";
+                    else number+="5";
+                });
+              	}, 
+              	style: OutlinedButton.styleFrom(
+              
+                  fixedSize: Size(_buttonWidth, _buttonHeight),
+                ), 
+              	child: Text("5"), 
+              ),
+              OutlinedButton( 
+              	onPressed: () { // Respond to button press 
+                  setState((){
+                      if(number=="0") number = "6";
+                    else number+="6";
+                });
+              	}, 
+              	style: OutlinedButton.styleFrom(
+              	
+                  fixedSize: Size(_buttonWidth, _buttonHeight),
+                ), 
+              	child: Text("6"), 
+              ),
+              OutlinedButton( 
+              	onPressed: () { // Respond to button press 
+                 setState((){
+                    operator="+";
+                  value=(double.parse(value)+double.parse(number)).toString();
+                  number="0";
+                });
+              	}, 
+              	style: OutlinedButton.styleFrom(
+              			backgroundColor: Colors.yellow,
+                  fixedSize: Size(_buttonWidth, _buttonHeight),
+                ), 
+              	child: Text("+"), 
+              ),
+                ]
+              ),
+
+
+               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children:<Widget>[
+                    
+                    OutlinedButton( 
+              	onPressed: () { // Respond to button press 
+                  setState(() {
+                      if(number=="0") number = "1";
+                    else number+="1";
+                   });
+                },
+              	style: OutlinedButton.styleFrom(
+                  fixedSize: Size(_buttonWidth, _buttonHeight),
+                ), 
+              	child: Text("1"), 
+              ),
+                OutlinedButton( 
+              	onPressed: () { // Respond to button press 
+                  setState((){
+                      if(number=="0") number = "2";
+                    else number+="2";
+                });
+              	}, 
+              	style: OutlinedButton.styleFrom(
+              
+                  fixedSize: Size(_buttonWidth, _buttonHeight),
+                ), 
+              	child: Text("2"), 
+              ),
+              OutlinedButton( 
+              	onPressed: () { // Respond to button press 
+                  setState((){
+                    if(number=="0") number = "3";
+                    else number+="3";
+                });
+              	}, 
+              	style: OutlinedButton.styleFrom(
+              	
+                  fixedSize: Size(_buttonWidth, _buttonHeight),
+                ), 
+              	child: Text("3"), 
+              ),
+              OutlinedButton( 
+              	onPressed: () { // Respond to button press 
+                 setState((){
+                    operator="-";
+                  value=(double.parse(value)-double.parse(number)).toString();
+                  number="0";
+                });
+              	}, 
+              	style: OutlinedButton.styleFrom(
+              			backgroundColor: Colors.yellow,
+                  fixedSize: Size(_buttonWidth, _buttonHeight),
+                ), 
+              	child: Text("-"), 
+              ),
+                ]
+              ),
+               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children:<Widget>[
+                    
+                    OutlinedButton( 
+              	onPressed: () { // Respond to button press
+                setState((){
+                    if(number=="0") number = "0";
+                    else number+="0";
+                });
+              	}, 
+              	style: OutlinedButton.styleFrom(
+              		//backgroundColor: Colors.blue
+                  fixedSize: Size(3*_buttonWidth, _buttonHeight),
+                ), 
+              	child: Text("0"), 
+              ),
+                OutlinedButton( 
+              	onPressed: () { // Respond to button press 
+                 setState((){
+                  if(operator=="+"){
+                     value=(double.parse(value)+double.parse(number)).toString();
+                  }else if(operator=="-"){
+                     value=(double.parse(value)-double.parse(number)).toString();
+                  }
+                  else if(operator=="x"){
+                     value=(double.parse(value)*double.parse(number)).toString();
+                  }else{
+                     value=(double.parse(value)/double.parse(number)).toString();
+                  }
+    
+                  number="0";
+                });
+              	}, 
+              	style: OutlinedButton.styleFrom(
+              		backgroundColor: Colors.yellow,
+                  fixedSize: Size(_buttonWidth, _buttonHeight),
+                ), 
+              	child: Text("="), 
+              ),
+                ]
+              ),
+          ],
+        )
+        )
+      )
+    );
+  }
+}
