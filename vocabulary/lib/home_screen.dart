@@ -3,7 +3,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:vocabulary/screen.dart';
 
-List<String> data = [];
+import 'main.dart';
+
+List<String>? items;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,12 +15,28 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  void loadItems() {
+    if (prefs.getStringList('items') != null) {
+      setState(() {
+        items = prefs.getStringList('items')!;
+      });
+    }
+  }
+
   @override
   void initState() {
-    data.add(
-        "Test1, apple, 사과, banana, 바나나, grape, 포도, ramen, 라면, int , 정수, flutter, 플러터");
-    data.add("Test2,a, 에이, b, 비, c , 씨 , d , 디");
     super.initState();
+    loadItems();
+  }
+
+  @override
+  void dispose() {
+    saveData();
+    super.dispose();
+  }
+
+  void saveData() async {
+    await prefs.setStringList('items', items ?? []);
   }
 
   @override
@@ -40,26 +58,45 @@ class _HomeScreenState extends State<HomeScreen> {
                     context,
                     MaterialPageRoute(
                       builder: (context) {
+                        String title = "";
                         return AlertDialog(
                           // AlertDialog의 속성들을 설정합니다
-                          title: const Text('삭제'), // 팝업의 제목
-                          content: Text(
-                              "정말 ${data[index].split(",")[0]} 을/를 삭제하시겠습니까?"),
+                          title: const Text('알림'), // 팝업의 제목
+                          content: TextField(
+                            onChanged: (value) {
+                              title = value;
+                            },
+                            style: const TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              labelText: '제목',
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 20),
+                            ),
+                          ), // 팝업의 내용
                           actions: [
                             // 팝업의 액션 버튼들을 설정합니다
                             TextButton(
-                              child: const Text('취소'),
-                              onPressed: () {
-                                Navigator.of(context).pop(); // 팝업 닫기
-                              },
-                            ),
-                            TextButton(
                               child: const Text('확인'),
                               onPressed: () {
-                                Navigator.of(context).pop(); // 팝업 닫기
                                 setState(() {
-                                  data.removeAt(index);
+                                  String result = "";
+                                  List<String> tmp =
+                                      items!.elementAt(index).split(",");
+                                  if (title.trim() == "") {
+                                    tmp[0] = "제목없음";
+                                  } else {
+                                    tmp[0] = title;
+                                  }
+                                  for (int i = 0; i < tmp.length; i++) {
+                                    result += "${tmp[i]},";
+                                  }
+                                  items![index] = result;
                                 });
+                                Navigator.of(context).pop(); // 팝업 닫기
                               },
                             ),
                           ],
@@ -69,17 +106,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
                 onTap: () {
-                  setState(() {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Screen(
-                          indexInData: index,
-                          data: data[index],
-                        ),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Screen(
+                        indexInData: index,
+                        data: items!.elementAt(index),
                       ),
-                    );
-                  });
+                    ),
+                  );
+                  setState(() {});
                 },
                 child: Container(
                   margin: const EdgeInsets.all(10),
@@ -98,14 +134,72 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: const Color.fromARGB(255, 60, 183, 255),
                   ),
                   height: 60,
-                  child: Center(
-                    child: Text(data[index].split(",")[0]),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: Text(
+                          items!.elementAt(index).split(",")[0],
+                          style: const TextStyle(fontSize: 25),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          String s = "";
+                          if (index == 0) {
+                            s = "정말 ${items?.elementAt(0).split(",")[0]} 을/를 삭제하시겠습니까?";
+                          } else if (index > 0) {
+                            s = "정말 ${items?.elementAt(index).split(",")[0]} 을/를 삭제하시겠습니까?";
+                          }
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return AlertDialog(
+                                  // AlertDialog의 속성들을 설정합니다
+                                  title: const Text('삭제'), // 팝업의 제목
+                                  content: Text(s),
+                                  actions: [
+                                    // 팝업의 액션 버튼들을 설정합니다
+                                    TextButton(
+                                      child: const Text('취소'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop(); // 팝업 닫기
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: const Text('확인'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop(); // 팝업 닫기
+                                        setState(() {
+                                          items?.removeAt(index);
+                                          saveData();
+                                          if (index != 0) index--;
+                                        });
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          );
+                        },
+                        child: const Padding(
+                          padding: EdgeInsets.only(right: 20),
+                          child: Icon(
+                            Icons.delete_forever_rounded,
+                            size: 30,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               );
             },
             separatorBuilder: (context, index) {
-              if (index < data.length - 1) {
+              if (index < items!.length - 1) {
                 // 마지막 아이템 다음에는 구분자를 생성하지 않음
                 return const SizedBox(height: 1);
               } else {
@@ -114,7 +208,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               }
             },
-            itemCount: data.length),
+            itemCount: items?.length ?? 0),
         floatingActionButton: Builder(
           builder: (BuildContext context) {
             return FloatingActionButton(
@@ -144,16 +238,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         ), // 팝업의 내용
                         actions: [
                           // 팝업의 액션 버튼들을 설정합니다
-                          // 팝업의 액션 버튼들을 설정합니다
                           TextButton(
                             child: const Text('확인'),
                             onPressed: () {
                               setState(() {
                                 if (title.trim() == "") {
-                                  data.add("제목없음");
+                                  items!.insert(0, "제목없음");
                                 } else {
-                                  data.add(title);
+                                  items!.insert(0, title);
                                 }
+                                saveData();
                               });
                               Navigator.of(context).pop(); // 팝업 닫기
                             },

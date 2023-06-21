@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vocabulary/create_screen.dart';
 import 'home_screen.dart';
+import 'main.dart';
 import 'word.model.dart';
 
 class MyData extends ChangeNotifier {
@@ -35,13 +36,13 @@ class MyData extends ChangeNotifier {
     return result;
   }
 
-  void saveData() {
-    data[indexInData] = listToString();
+  void saveData() async {
+    items?[indexInData] = listToString();
+    await prefs.setStringList('items', items ?? []);
   }
 }
 
 class Screen extends StatefulWidget {
-  //List<WordModel> list = [];
   late MyData myData;
   int idx = 0;
   int indexInData;
@@ -82,53 +83,7 @@ class _ScreenState extends State<Screen> {
     return Scaffold(
       appBar: AppBar(
         title: GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  String title = "";
-                  return AlertDialog(
-                    // AlertDialog의 속성들을 설정합니다
-                    title: const Text('알림'), // 팝업의 제목
-                    content: TextField(
-                      onChanged: (value) {
-                        title = value;
-                      },
-                      style: const TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        labelText: '제목',
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                      ),
-                    ), // 팝업의 내용
-                    actions: [
-                      // 팝업의 액션 버튼들을 설정합니다
-                      // 팝업의 액션 버튼들을 설정합니다
-                      TextButton(
-                        child: const Text('확인'),
-                        onPressed: () {
-                          setState(() {
-                            if (title.trim() == "") {
-                              widget.myData.title = "제목없음";
-                            } else {
-                              widget.myData.title = title;
-                              widget.myData.saveData();
-                            }
-                          });
-                          Navigator.of(context).pop(); // 팝업 닫기
-                        },
-                      ),
-                    ],
-                  );
-                },
-              ),
-            );
-          },
+          onTap: () {},
           child: Text(widget.myData.title),
         ),
         leading: IconButton(
