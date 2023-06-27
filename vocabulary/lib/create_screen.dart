@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vocabulary/word.model.dart';
 
-import 'screen.dart';
+import 'detail_screen.dart';
 
 class CreateWordScreen extends StatefulWidget {
   MyData myData;
@@ -24,6 +24,7 @@ class _CreateWordScreenState extends State<CreateWordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).cardColor,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -35,7 +36,7 @@ class _CreateWordScreenState extends State<CreateWordScreen> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          color: const Color.fromARGB(255, 231, 231, 231),
+          color: Theme.of(context).cardColor,
           child: Column(
             children: [
               const SizedBox(height: 20),
@@ -94,6 +95,23 @@ class _CreateWordScreenState extends State<CreateWordScreen> {
                         _enteredEng = '';
                         _enteredKor = '';
                         _clearText();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10)),
+                            ),
+                            backgroundColor: Colors.blue,
+                            duration: Duration(seconds: 1),
+                            content: Text(
+                              "단어 추가 성공!",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        );
                       }
                     });
                   },

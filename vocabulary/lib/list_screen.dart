@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vocabulary/screen.dart';
+import 'package:vocabulary/detail_screen.dart';
 
 class WordList extends StatelessWidget {
   MyData myData;
@@ -8,6 +8,7 @@ class WordList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).cardColor,
       appBar: AppBar(
         title: GestureDetector(
           onTap: () {},
