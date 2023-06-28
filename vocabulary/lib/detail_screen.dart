@@ -51,7 +51,7 @@ class Screen extends StatefulWidget {
   late MyData myData;
   int idx = 0;
   int indexInData;
-  bool _isChecked = false;
+  bool _isChecked = true;
   bool isOpen = false;
   final String data;
 
@@ -71,8 +71,7 @@ class _ScreenState extends State<Screen> {
     widget.myData = MyData(
         indexInData: widget.indexInData, title: widget.data.split("|")[0]);
     widget.myData.list.add(const WordModel("영어단어", "뜻"));
-    if (widget.data.split("|").length < 2) {
-    } else {
+    if (widget.data.split("|").length >= 2) {
       var arr = widget.data.split("|");
       for (int i = 1; i < arr.length - 1; i = i + 2) {
         widget.myData.list.add(WordModel(arr[i], arr[i + 1]));
@@ -94,6 +93,7 @@ class _ScreenState extends State<Screen> {
 
   @override
   Widget build(BuildContext context) {
+    void navi() async {}
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.myData.title),
@@ -168,8 +168,8 @@ class _ScreenState extends State<Screen> {
                                   icon: Icons.add,
                                   widget: widget,
                                   text: "단어 추가",
-                                  onPressedFunction: () {
-                                    Navigator.push(
+                                  onPressedFunction: () async {
+                                    await Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => CreateWordScreen(
@@ -177,27 +177,8 @@ class _ScreenState extends State<Screen> {
                                         ),
                                       ),
                                     );
-                                  },
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 10,
-                                  bottom: 10,
-                                ),
-                                child: MyButton(
-                                  icon: Icons.list,
-                                  widget: widget,
-                                  text: "리스트",
-                                  onPressedFunction: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => WordList(
-                                          myData: widget.myData,
-                                        ),
-                                      ),
-                                    );
+                                    setState(() {});
+                                    Navigator.of(context).pop(); // 팝업 닫기
                                   },
                                 ),
                               ),
@@ -264,6 +245,27 @@ class _ScreenState extends State<Screen> {
                                   text: "영어사전",
                                   onPressedFunction: () {
                                     onTapGoToDictionary();
+                                  },
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 10,
+                                  bottom: 10,
+                                ),
+                                child: MyButton(
+                                  icon: Icons.list,
+                                  widget: widget,
+                                  text: "리스트",
+                                  onPressedFunction: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => WordList(
+                                          myData: widget.myData,
+                                        ),
+                                      ),
+                                    );
                                   },
                                 ),
                               ),
@@ -352,8 +354,8 @@ class _ScreenState extends State<Screen> {
         },
         onPanEnd: (DragEndDetails details) {
           initial = 0.0;
-          if (distance < -150) rightSwipe();
-          if (distance > 150) leftSwipe();
+          if (distance < -20) rightSwipe();
+          if (distance > 20) leftSwipe();
         },
         child: Container(
           color: Theme.of(context).cardColor,
@@ -477,6 +479,10 @@ class _ScreenState extends State<Screen> {
         widget.idx++;
         widget.isOpen = false;
       }
+      if (widget.idx == widget.myData.list.length - 1) {
+        widget.idx = 0;
+        widget.isOpen = false;
+      }
     });
   }
 
@@ -484,6 +490,10 @@ class _ScreenState extends State<Screen> {
     setState(() {
       if (widget.idx != 0) {
         widget.idx--;
+        widget.isOpen = false;
+      }
+      if (widget.idx == 0) {
+        widget.idx = widget.myData.list.length - 1;
         widget.isOpen = false;
       }
     });

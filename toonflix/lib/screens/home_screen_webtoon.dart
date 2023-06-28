@@ -36,13 +36,13 @@ class HomeScreenWebtoon extends StatelessWidget {
           child: Text(
             "오늘의 웹툰",
             style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w400,
+              fontSize: 28,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ),
         //음영
-        elevation: 2,
+        elevation: 4,
         foregroundColor: Colors.green,
         backgroundColor: Colors.white,
       ),

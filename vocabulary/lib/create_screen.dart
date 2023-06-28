@@ -46,6 +46,7 @@ class _CreateWordScreenState extends State<CreateWordScreen> {
                   color: Colors.white,
                 ),
                 child: TextField(
+                  keyboardType: TextInputType.text,
                   controller: _textEditingController1,
                   onChanged: (value) {
                     _enteredEng = value;
