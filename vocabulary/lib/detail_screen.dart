@@ -93,7 +93,6 @@ class _ScreenState extends State<Screen> {
 
   @override
   Widget build(BuildContext context) {
-    void navi() async {}
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.myData.title),
@@ -478,8 +477,7 @@ class _ScreenState extends State<Screen> {
       if (widget.idx != widget.myData.list.length - 1) {
         widget.idx++;
         widget.isOpen = false;
-      }
-      if (widget.idx == widget.myData.list.length - 1) {
+      } else if (widget.idx == widget.myData.list.length - 1) {
         widget.idx = 0;
         widget.isOpen = false;
       }
@@ -491,8 +489,7 @@ class _ScreenState extends State<Screen> {
       if (widget.idx != 0) {
         widget.idx--;
         widget.isOpen = false;
-      }
-      if (widget.idx == 0) {
+      } else if (widget.idx == 0) {
         widget.idx = widget.myData.list.length - 1;
         widget.isOpen = false;
       }
