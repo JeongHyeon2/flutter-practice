@@ -1,6 +1,6 @@
 # vocabulary
 
-A new Flutter project.
+영어 단어장
 
 ## Getting Started
 
