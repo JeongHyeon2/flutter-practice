@@ -208,6 +208,7 @@ class _ScreenState extends State<Screen> {
                                           widget.myData.delete(widget.idx);
                                           widget.idx--;
                                         });
+
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           SnackBar(
@@ -242,8 +243,9 @@ class _ScreenState extends State<Screen> {
                                   icon: Icons.book_outlined,
                                   widget: widget,
                                   text: "영어사전",
-                                  onPressedFunction: () {
-                                    onTapGoToDictionary();
+                                  onPressedFunction: () async {
+                                    await onTapGoToDictionary();
+                                    Navigator.of(context).pop();
                                   },
                                 ),
                               ),

@@ -10,7 +10,7 @@ class HomeScreenWebtoonPra extends StatefulWidget {
 }
 
 class _HomeScreenWebtoonPraState extends State<HomeScreenWebtoonPra> {
-  final Future<List<WebtoonModel>> webtoons = [WebtoonModel()];
+  final Future<List<WebtoonModel>> webtoons = [] as Future<List<WebtoonModel>>;
   final Color mainBackColor = const Color.fromARGB(255, 102, 241, 174);
   final Color mainStringColor = const Color.fromARGB(255, 235, 235, 235);
   @override

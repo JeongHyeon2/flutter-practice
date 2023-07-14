@@ -1,7 +1,6 @@
 import 'dart:ui';
-
+import 'package:wakelock/wakelock.dart';
 import 'package:flutter/material.dart';
-
 import 'detail_screen.dart';
 import 'main.dart';
 
@@ -27,6 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     loadItems();
+    print(items);
+    Wakelock.enable();
   }
 
   @override
