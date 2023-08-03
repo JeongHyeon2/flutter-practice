@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:inflearn_practice/dday.dart';
+import 'package:inflearn_practice/screen/home_screen.dart';
 
 void main() {
   runApp(MyApp());
