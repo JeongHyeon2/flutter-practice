@@ -24,16 +24,17 @@ class DefaultLayout extends StatelessWidget {
     );
   }
 
-  AppBar? renderAppBar(){
-    if(title == null){
+  AppBar? renderAppBar() {
+    if (title == null) {
       return null;
-    }else{
+    } else {
       return AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
+        centerTitle: true,
         title: Text(
           title!,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 16.0,
             fontWeight: FontWeight.w500,
           ),
