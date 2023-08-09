@@ -1,12 +1,13 @@
-import 'package:flutter/material.dart';
 import 'package:middle_class/common/const/colors.dart';
 import 'package:middle_class/common/const/data.dart';
 import 'package:middle_class/common/layout/default_layout.dart';
+import 'package:middle_class/common/view/root_tab.dart';
 import 'package:middle_class/user/view/login_screen.dart';
-import 'package:middle_class/view/root_tab.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -16,7 +17,8 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    //  deleteToken();
+
+    // deleteToken();
     checkToken();
   }
 
@@ -27,18 +29,35 @@ class _SplashScreenState extends State<SplashScreen> {
   void checkToken() async {
     final refreshToken = await storage.read(key: REFRESH_TOKEN_KEY);
     final accessToken = await storage.read(key: ACCESS_TOKEN_KEY);
-    if (refreshToken == null || accessToken == null) {
+
+    final dio = Dio();
+
+    try {
+      final resp = await dio.post(
+        '$smIp/auth/token',
+        options: Options(
+          headers: {
+            'authorization': 'Bearer $refreshToken',
+          },
+        ),
+      );
+
+      await storage.write(
+          key: ACCESS_TOKEN_KEY, value: resp.data['accessToken']);
+
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) => const LoginScreen(),
-          ),
-          (route) => false);
-    } else {
+        MaterialPageRoute(
+          builder: (_) => const RootTab(),
+        ),
+        (route) => false,
+      );
+    } catch (e) {
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) => const RootTab(),
-          ),
-          (route) => false);
+        MaterialPageRoute(
+          builder: (_) => const LoginScreen(),
+        ),
+        (route) => false,
+      );
     }
   }
 
@@ -52,12 +71,10 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              "asset/img/logo/logo.png",
+              'asset/img/logo/logo.png',
               width: MediaQuery.of(context).size.width / 2,
             ),
-            const SizedBox(
-              height: 16,
-            ),
+            const SizedBox(height: 16.0),
             const CircularProgressIndicator(
               color: Colors.white,
             ),
