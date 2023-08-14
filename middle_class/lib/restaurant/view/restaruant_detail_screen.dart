@@ -5,6 +5,7 @@ import 'package:middle_class/common/layout/default_layout.dart';
 import 'package:middle_class/product/product_card.dart';
 import 'package:middle_class/restaurant/component/restaurant_card.dart';
 import 'package:middle_class/restaurant/model/restaurant_detail_model.dart';
+import 'package:middle_class/restaurant/repository/restaurant_repository.dart';
 
 class RestaurantDetailScreen extends StatelessWidget {
   final String id;
@@ -12,16 +13,11 @@ class RestaurantDetailScreen extends StatelessWidget {
     required this.id,
     super.key,
   });
-  Future<Map<String, dynamic>> getRestaurantDetail() async {
+  Future<RestaurantDetailModel> getRestaurantDetail() async {
     final dio = Dio();
-    final accessToken = await storage.read(key: ACCESS_TOKEN_KEY);
-    final resp = await dio.get(
-      "$smIp/restaurant/$id",
-      options: Options(
-        headers: {"authorization": "Bearer $accessToken"},
-      ),
-    );
-    return resp.data;
+
+    final repository = RestaurantRepository(dio, baseUrl: "$smIp/restaurant");
+    return repository.getRestaurantDetail(id: id);
   }
 
   @override
@@ -29,23 +25,21 @@ class RestaurantDetailScreen extends StatelessWidget {
     String n = "불타는 떡볶이";
     return DefaultLayout(
       title: n,
-      child: FutureBuilder<Map<String, dynamic>>(
+      child: FutureBuilder<RestaurantDetailModel>(
         future: getRestaurantDetail(),
-        builder: (context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
+        builder: (context, AsyncSnapshot<RestaurantDetailModel> snapshot) {
           if (!snapshot.hasData) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
 
-          final item = RestaurantDetailModel.fromJson(json: snapshot.data!);
-          n = item.name;
           return CustomScrollView(
             slivers: [
-              renderTop(model: item),
+              renderTop(model: snapshot.data!),
               renderLabel(),
               renderProduct(
-                products: item.products,
+                products: snapshot.data!.products,
               ),
             ],
           );
