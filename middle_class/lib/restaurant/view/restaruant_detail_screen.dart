@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:middle_class/common/const/data.dart';
+import 'package:middle_class/common/dio/dio.dart';
 import 'package:middle_class/common/layout/default_layout.dart';
 import 'package:middle_class/product/product_card.dart';
 import 'package:middle_class/restaurant/component/restaurant_card.dart';
@@ -15,6 +16,11 @@ class RestaurantDetailScreen extends StatelessWidget {
   });
   Future<RestaurantDetailModel> getRestaurantDetail() async {
     final dio = Dio();
+    dio.interceptors.add(
+      CustomInterceptor(
+        storage: storage,
+      ),
+    );
 
     final repository = RestaurantRepository(dio, baseUrl: "$smIp/restaurant");
     return repository.getRestaurantDetail(id: id);
@@ -33,7 +39,6 @@ class RestaurantDetailScreen extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
-
           return CustomScrollView(
             slivers: [
               renderTop(model: snapshot.data!),
