@@ -1,9 +1,12 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:middle_class/common/view/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(
-    const _App(),
+    const ProviderScope(
+      child: _App(),
+    ),
   );
 }
 
