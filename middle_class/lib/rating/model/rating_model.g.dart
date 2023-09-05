@@ -9,7 +9,7 @@ part of 'rating_model.dart';
 RatingModel _$RatingModelFromJson(Map<String, dynamic> json) => RatingModel(
       content: json['content'] as String,
       id: json['id'] as String,
-      imgUrls: DataUtils.listPathsToUrls(json['imgUrls'] as List<String>),
+      imgUrls: DataUtils.listPathsToUrls(json['imgUrls'] as List),
       rating: json['rating'] as int,
       user: UserModel.fromJson(json['user'] as Map<String, dynamic>),
     );

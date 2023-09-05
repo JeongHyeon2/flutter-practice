@@ -6,7 +6,10 @@ abstract class CursorPaginationBase {}
 
 class CursorPaginationError extends CursorPaginationBase {
   final String message;
-  CursorPaginationError({required this.message});
+
+  CursorPaginationError({
+    required this.message,
+  });
 }
 
 class CursorPaginationLoading extends CursorPaginationBase {}
@@ -19,17 +22,17 @@ class CursorPagination<T> extends CursorPaginationBase {
   final List<T> data;
 
   CursorPagination({
-    required this.data,
     required this.meta,
+    required this.data,
   });
 
   CursorPagination copyWith({
     CursorPaginationMeta? meta,
     List<T>? data,
   }) {
-    return CursorPagination(
-      data: data ?? this.data,
+    return CursorPagination<T>(
       meta: meta ?? this.meta,
+      data: data ?? this.data,
     );
   }
 
@@ -42,10 +45,12 @@ class CursorPagination<T> extends CursorPaginationBase {
 class CursorPaginationMeta {
   final int count;
   final bool hasMore;
+
   CursorPaginationMeta({
     required this.count,
     required this.hasMore,
   });
+
   CursorPaginationMeta copyWith({
     int? count,
     bool? hasMore,
@@ -60,16 +65,19 @@ class CursorPaginationMeta {
       _$CursorPaginationMetaFromJson(json);
 }
 
-class CursorPaginationRefetching<T> extends CursorPagination {
+// 새로고침 할때
+class CursorPaginationRefetching<T> extends CursorPagination<T> {
   CursorPaginationRefetching({
     required super.meta,
     required super.data,
   });
 }
 
-class CursorPaginationFetchingMore<T> extends CursorPagination {
+// 리스트의 맨 아래로 내려서
+// 추가 데이터를 요청하는중
+class CursorPaginationFetchingMore<T> extends CursorPagination<T> {
   CursorPaginationFetchingMore({
-    required super.data,
     required super.meta,
+    required super.data,
   });
 }
