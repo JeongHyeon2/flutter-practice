@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:middle_class/common/layout/default_layout.dart';
 import 'package:middle_class/common/model/cursor_pagination_model.dart';
 import 'package:middle_class/common/utils/pagination_utils.dart';
-import 'package:middle_class/product/product_card.dart';
+import 'package:middle_class/product/component/product_card.dart';
 import 'package:middle_class/rating/component/rating_card.dart';
 import 'package:middle_class/rating/model/rating_model.dart';
 import 'package:middle_class/restaurant/component/restaurant_card.dart';
@@ -157,7 +157,7 @@ class _RestaurantDetailScreenState
               padding: const EdgeInsets.only(
                 top: 16,
               ),
-              child: ProductCard.fromModel(
+              child: ProductCard.fromRestaurantProductModel(
                 model: model,
               ),
             );
