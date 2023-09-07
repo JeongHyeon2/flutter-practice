@@ -5,6 +5,7 @@ import 'package:go_router_practice/route/screens/3_push_screen.dart';
 import 'package:go_router_practice/route/screens/4_pop_base_screen.dart';
 import 'package:go_router_practice/route/screens/5_pop_return_screen.dart';
 import 'package:go_router_practice/route/screens/6_path_param_screen.dart';
+import 'package:go_router_practice/route/screens/7_query_parameter_screen.dart';
 import 'package:go_router_practice/route/screens/root_screen.dart';
 
 final router = GoRouter(
@@ -61,6 +62,12 @@ final router = GoRouter(
               },
             ),
           ],
+        ),
+        GoRoute(
+          path: 'query_param',
+          builder: (context, state) {
+            return const QueryParameterScreen();
+          },
         ),
       ],
     ),
