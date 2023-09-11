@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:middle_class/common/const/data.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:middle_class/common/secure_storage/secure_storage.dart';
+import 'package:middle_class/user/provider/auth_provider.dart';
 
 final dioProvider = Provider(
   (ref) {
@@ -12,6 +13,7 @@ final dioProvider = Provider(
     dio.interceptors.add(
       CustomInterceptor(
         storage: storage,
+        ref: ref,
       ),
     );
     return dio;
@@ -20,9 +22,11 @@ final dioProvider = Provider(
 
 class CustomInterceptor extends Interceptor {
   final FlutterSecureStorage storage;
+  final Ref ref;
 
   CustomInterceptor({
     required this.storage,
+    required this.ref,
   });
 
   @override
@@ -87,6 +91,8 @@ class CustomInterceptor extends Interceptor {
         final response = await dio.fetch(options);
         return handler.resolve(response);
       } catch (e) {
+        ref.read(authProvider).logout();
+
         return handler.reject(err);
       }
     }

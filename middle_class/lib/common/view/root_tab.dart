@@ -3,8 +3,10 @@ import 'package:middle_class/common/layout/default_layout.dart';
 import 'package:middle_class/product/view/product_screen.dart';
 import 'package:middle_class/restaurant/view/restaurant_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:middle_class/user/view/profile_screen.dart';
 
 class RootTab extends StatefulWidget {
+  static String get routeName => 'home';
   const RootTab({Key? key}) : super(key: key);
 
   @override
@@ -78,7 +80,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
           const RestaurantScreen(),
           const ProductScreen(),
           Center(child: Container(child: const Text('주문'))),
-          Center(child: Container(child: const Text('프로필'))),
+          const ProfileScreen(),
         ],
       ),
     );
