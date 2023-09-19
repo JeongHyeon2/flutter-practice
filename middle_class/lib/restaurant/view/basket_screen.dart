@@ -111,26 +111,32 @@ class BasketScreen extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        final resp =
-                            await ref.read(orderProvider.notifier).postOrder();
-                        if (resp) {
-                          context.goNamed(OrderDoneScreen.routeName);
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text("결제 실패!"),
-                            ),
-                          );
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: PRIMARY_COLOR,
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      bottom: 16,
+                    ),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          final resp = await ref
+                              .read(orderProvider.notifier)
+                              .postOrder();
+                          if (resp) {
+                            context.goNamed(OrderDoneScreen.routeName);
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("결제 실패!"),
+                              ),
+                            );
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: PRIMARY_COLOR,
+                        ),
+                        child: const Text('결제하기'),
                       ),
-                      child: const Text('결제하기'),
                     ),
                   ),
                 ],
