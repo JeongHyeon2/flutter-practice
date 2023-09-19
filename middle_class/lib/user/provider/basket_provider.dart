@@ -8,9 +8,10 @@ import 'package:middle_class/user/repository/user_me_repository.dart';
 final basketProvider =
     StateNotifierProvider<BasketProvider, List<BasketItemModel>>(
   (ref) {
-    final rep = ref.watch(userMeRepositoryProvider);
+    final repository = ref.watch(userMeRepositoryProvider);
+
     return BasketProvider(
-      repository: rep,
+      repository: repository,
     );
   },
 );
